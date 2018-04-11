@@ -22,7 +22,33 @@ public class AdAstraApi {
 	/*
 	 *Constructor sets BaseUrl, ResponderUrl and ResponderParameters properties
 	 */
-	public AdAstrapApi() {
-		this.BaseUrl=
+	public AdAstraApi() {
+		this.BaseUrl="http://app32mlml/SG757108NOKSQL_1_1/";
+		this.ResponderUrl="~api/search/room?action=GET";
+		this.responderParameters="fields=RowNumber%2CId%2CRoomName%2CRoomDescription%2CRoomNumber%2CRoomTypeName%2CBuildingCode%2CBuildingName%2CCampusName%2CCapacity%2CBuildingRoomNumberRoomName%2CCanEdit%2CCanDelete&sortOrder=%2BBuildingRoomNumberRoomName";
+	}
+	public String Login() throws MalformedURLException, IOException{
+		/*
+		 * Open an HTTP Connection to the Logon.ashx page
+		 */
+		HttpURLConnection httpcon=(HttpURLConnection) ((new URL(BaseUrl+"Logon.ashx").openConnection()));
+		httpcon.setDoOutput(true);
+		httpcon.setRequestProperty("Content-Type", "application/json");
+		httpcon.setRequestProperty("Accept", "application/json");
+		httpcon.setRequestMethod("POST");
+		httpcon.connect();
+		/*
+		 * Output user credentials over HTTP Output Stream
+		 */
+		byte[] outputBytes="{'username': 'sysadmin', 'password':'apple'}".getBytes("UTF-8");
+		OutputStream os=httpcon.getOutputStream();
+		os.write(outputBytes);;
+		os.close();
+		/*
+		 * Call Function setCookie and pass the HttpUrlConnection. Set Function
+		 * will return a Cookie String used to authenticate user.
+		 */
+		return setCookie(httpcon);
+				
 	}
 }
